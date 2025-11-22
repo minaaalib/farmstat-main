@@ -1,10 +1,81 @@
 <?php
 $title = 'Login - FarmStats';
-
+require_once VIEWS_PATH . '/layouts/header.php';
 ?>
 
+<div class="login-container">
+    <div class="login-header">
+        <div class="logo">
+            🌱
+        </div>
+        <h1>Welcome to FarmStats</h1>
+        <p>Sign in to your account</p>
+    </div>
+
+    <?php if (isset($_SESSION['error'])): ?>
+        <div class="error-message">
+            ⚠️
+            <?php 
+            echo htmlspecialchars($_SESSION['error']); 
+            unset($_SESSION['error']);
+            ?>
+        </div>
+    <?php endif; ?>
+
+    <form method="POST" action="<?php echo BASE_URL; ?>/login">
+        <div class="user-type-selector">
+            <div class="user-type-option">
+                <input type="radio" id="admin" name="user_type" value="admin" required>
+                <label for="admin" class="user-type-label">
+                    <div class="user-type-icon admin-icon">
+                        🛡️
+                    </div>
+                    <div class="user-type-name">Administrator</div>
+                    <div class="user-type-desc">System Management</div>
+                </label>
+            </div>
+            
+            <div class="user-type-option">
+                <input type="radio" id="farmer" name="user_type" value="farmer" required checked>
+                <label for="farmer" class="user-type-label">
+                    <div class="user-type-icon client-icon">
+                        👨‍🌾
+                    </div>
+                    <div class="user-type-name">Farmer</div>
+                    <div class="user-type-desc">Campaign Farmer</div>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <div class="input-with-icon">
+                <span class="input-icon">✉️</span>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-with-icon">
+                <span class="input-icon">🔒</span>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            <span class="btn-icon">🔑</span>
+            Sign In
+        </button>
+    </form>
+
+    <div class="register-link">
+        <p>Don't have an account? <a href="<?php echo BASE_URL; ?>/register">Create one here</a></p>
+    </div>
+</div>
+
 <style>
-/* Login Page Modern Styles */
+ /* Login Page Modern Styles - Beautiful Minimalist Version */
 :root {
     --primary-dark: #1a4d2e;
     --primary-medium: #4a7c59;
@@ -18,7 +89,7 @@ $title = 'Login - FarmStats';
     --border: #dde8e0;
     --shadow: 0 4px 12px rgba(26, 77, 46, 0.08);
     --shadow-lg: 0 8px 24px rgba(26, 77, 46, 0.12);
-    --border-radius: 20px;
+    --border-radius: 16px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -30,27 +101,49 @@ $title = 'Login - FarmStats';
 
 body {
     font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: linear-gradient(135deg, var(--primary-light) 0%, var(--background) 50%, var(--white) 100%);
+    background: linear-gradient(135deg, 
+        #1a4d2e 0%, 
+        #2d6a4f 25%, 
+        #40916c 50%, 
+        #52b788 75%, 
+        #74c69d 100%);
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
-    line-height: 1.6;
+    padding: 1rem;
+    line-height: 1.4;
     color: var(--text);
+    position: relative;
+    overflow: hidden;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 154, 61, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(141, 181, 150, 0.1) 0%, transparent 50%);
+    pointer-events: none;
 }
 
 .login-container {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--white);
     border-radius: var(--border-radius);
-    box-shadow: var(--shadow-lg);
-    padding: 3rem;
+    box-shadow: 
+        var(--shadow-lg),
+        0 0 0 1px rgba(255, 255, 255, 0.3);
+    padding: 1.5rem 1.25rem; /* Even more compact */
     width: 100%;
-    max-width: 480px;
+    max-width: 380px; /* Even smaller */
     position: relative;
     overflow: hidden;
+    z-index: 1;
 }
 
 .login-container::before {
@@ -61,63 +154,71 @@ body {
     right: 0;
     height: 4px;
     background: linear-gradient(90deg, var(--accent-gold), var(--accent-orange));
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
 }
 
 .login-header {
     text-align: center;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
 }
 
 .logo {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 1.5rem;
-    background: linear-gradient(135deg, var(--primary-medium), var(--primary-dark));
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 1rem;
+    background: linear-gradient(135deg, 
+        rgba(74, 124, 89, 0.9), 
+        rgba(208, 253, 226, 0.9));
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: var(--shadow);
+    box-shadow: 
+        0 8px 32px rgba(26, 77, 46, 0.4),
+        inset 0 2px 4px rgba(255, 255, 255, 0.3),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+    font-size: 1.75rem;
+    color: var(--white);
+    border: 2px solid rgba(255, 255, 255, 0.5);
     position: relative;
+    z-index: 2;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Add shadow to emoji */
 }
+
+/* No pseudo-elements that might cover the content */
 
 .logo::after {
     content: '';
     position: absolute;
-    inset: -2px;
-    background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+    top: 10%;
+    left: 10%;
+    right: 10%;
+    bottom: 10%;
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 50%;
-    z-index: -1;
-    opacity: 0.7;
-}
-
-.logo i {
-    font-size: 2rem;
-    color: var(--white);
+    filter: blur(5px);
 }
 
 .login-header h1 {
-    font-size: 2.25rem;
-    font-weight: 800;
+    font-size: 1.75rem;
+    font-weight: 700;
     color: var(--primary-dark);
     margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, var(--primary-dark), var(--primary-medium));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    letter-spacing: -0.5px;
 }
 
 .login-header p {
     color: var(--text-light);
-    font-size: 1.1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 /* User Type Selector */
 .user-type-selector {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 2rem;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
 }
 
 .user-type-option {
@@ -131,10 +232,10 @@ body {
 
 .user-type-label {
     display: block;
-    padding: 1.5rem 1rem;
-    background: var(--background);
+    padding: 1rem 0.75rem;
+    background: var(--white);
     border: 2px solid var(--border);
-    border-radius: 16px;
+    border-radius: 12px;
     text-align: center;
     cursor: pointer;
     transition: var(--transition);
@@ -146,46 +247,49 @@ body {
     content: '';
     position: absolute;
     top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-    transition: left 0.5s;
-}
-
-.user-type-label:hover::before {
-    left: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, var(--primary-light) 0%, transparent 100%);
+    opacity: 0;
+    transition: var(--transition);
 }
 
 .user-type-label:hover {
-    transform: translateY(-2px);
     border-color: var(--primary-light);
     box-shadow: var(--shadow);
+    transform: translateY(-2px);
+}
+
+.user-type-label:hover::before {
+    opacity: 0.1;
 }
 
 .user-type-option input[type="radio"]:checked + .user-type-label {
-    background: linear-gradient(135deg, var(--primary-light) 0%, var(--white) 100%);
+    background: linear-gradient(135deg, var(--white), var(--white));
     border-color: var(--primary-medium);
     box-shadow: var(--shadow);
+    transform: translateY(-1px);
 }
 
-.user-type-option input[type="radio"]:checked + .user-type-label .user-type-icon {
-    transform: scale(1.1);
-    color: var(--primary-dark);
+.user-type-option input[type="radio"]:checked + .user-type-label::before {
+    opacity: 0.2;
 }
 
 .user-type-icon {
-    width: 50px;
-    height: 50px;
-    margin: 0 auto 0.75rem;
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 0.5rem;
     background: var(--white);
-    border-radius: 12px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.25rem;
     transition: var(--transition);
     box-shadow: var(--shadow);
+    position: relative;
+    z-index: 1;
 }
 
 .admin-icon {
@@ -197,20 +301,25 @@ body {
 }
 
 .user-type-name {
-    font-weight: 700;
+    font-weight: 600;
     color: var(--primary-dark);
     margin-bottom: 0.25rem;
-    font-size: 1rem;
+    font-size: 0.85rem;
+    position: relative;
+    z-index: 1;
 }
 
 .user-type-desc {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: var(--text-light);
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
 }
 
 /* Form Styles */
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 
 .form-group label {
@@ -218,71 +327,66 @@ body {
     margin-bottom: 0.5rem;
     font-weight: 600;
     color: var(--primary-dark);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
 .input-with-icon {
     position: relative;
     transition: var(--transition);
+    display: flex;
+    align-items: center;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    background: var(--white);
+    overflow: hidden;
 }
 
-.input-with-icon i {
+.input-icon {
     position: absolute;
     left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
     color: var(--primary-medium);
     transition: var(--transition);
     z-index: 2;
+    font-size: 1rem;
+    pointer-events: none;
 }
 
 .input-with-icon input {
     width: 100%;
     padding: 1rem 1rem 1rem 3rem;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    font-size: 1rem;
-    background: var(--white);
+    border: none;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    background: transparent;
     transition: var(--transition);
     position: relative;
     z-index: 1;
+    outline: none;
 }
 
 .input-with-icon input:focus {
-    outline: none;
+    background: rgba(141, 181, 150, 0.05);
+}
+
+.input-with-icon:focus-within {
     border-color: var(--primary-medium);
-    box-shadow: 0 0 0 3px rgba(77, 124, 89, 0.1);
+    box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.1);
     transform: translateY(-1px);
 }
 
-.input-with-icon input:focus + i {
+.input-with-icon:focus-within .input-icon {
     color: var(--primary-dark);
-    transform: translateY(-50%) scale(1.1);
-}
-
-.input-with-icon::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent-gold), var(--accent-orange));
-    transition: width 0.3s ease;
-}
-
-.input-with-icon:focus-within::after {
-    width: 100%;
+    transform: scale(1.1);
 }
 
 /* Button Styles */
 .btn {
     width: 100%;
-    padding: 1rem 2rem;
+    padding: 1rem 1.5rem;
     border: none;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    font-weight: 700;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
     transition: var(--transition);
     display: flex;
@@ -293,25 +397,22 @@ body {
     overflow: hidden;
 }
 
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+    opacity: 0;
+    transition: var(--transition);
+}
+
 .btn-primary {
     background: linear-gradient(135deg, var(--primary-medium), var(--primary-dark));
     color: var(--white);
     box-shadow: var(--shadow);
-}
-
-.btn-primary::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
-}
-
-.btn-primary:hover::before {
-    left: 100%;
 }
 
 .btn-primary:hover {
@@ -319,8 +420,21 @@ body {
     box-shadow: var(--shadow-lg);
 }
 
+.btn-primary:hover::before {
+    opacity: 1;
+}
+
 .btn-primary:active {
     transform: translateY(0);
+}
+
+.btn-icon {
+    font-size: 1.1rem;
+    transition: var(--transition);
+}
+
+.btn-primary:hover .btn-icon {
+    transform: scale(1.1);
 }
 
 /* Error Message */
@@ -328,30 +442,29 @@ body {
     background: linear-gradient(135deg, #fee, #fff5f5);
     border: 1px solid rgba(220, 38, 38, 0.2);
     color: #dc2626;
-    padding: 1rem 1.5rem;
-    border-radius: 12px;
+    padding: 1rem;
+    border-radius: 10px;
     margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
     gap: 0.75rem;
     font-weight: 500;
+    font-size: 0.9rem;
     box-shadow: var(--shadow);
-}
-
-.error-message i {
-    font-size: 1.1rem;
+    border-left: 4px solid #dc2626;
 }
 
 /* Register Link */
 .register-link {
     text-align: center;
-    margin-top: 2rem;
-    padding-top: 2rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
     border-top: 1px solid var(--border);
 }
 
 .register-link p {
     color: var(--text-light);
+    font-size: 0.9rem;
 }
 
 .register-link a {
@@ -369,8 +482,8 @@ body {
     left: 0;
     width: 0;
     height: 2px;
-    background: var(--accent-orange);
-    transition: width 0.3s ease;
+    background: var(--primary-medium);
+    transition: var(--transition);
 }
 
 .register-link a:hover {
@@ -381,11 +494,39 @@ body {
     width: 100%;
 }
 
-/* Animations */
+/* Responsive Design */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 2rem 1.5rem;
+        margin: 0.5rem;
+        max-width: 380px;
+    }
+    
+    .user-type-selector {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    
+    .login-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .logo {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+    
+    .user-type-icon {
+        font-size: 1.1rem;
+    }
+}
+
+/* Animation for subtle entrance */
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(20px);
     }
     to {
         opacity: 1;
@@ -396,146 +537,7 @@ body {
 .login-container {
     animation: fadeInUp 0.6s ease-out;
 }
-
-/* Responsive Design */
-@media (max-width: 480px) {
-    body {
-        padding: 1rem;
-    }
-    
-    .login-container {
-        padding: 2rem 1.5rem;
-    }
-    
-    .user-type-selector {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-    }
-    
-    .login-header h1 {
-        font-size: 1.75rem;
-    }
-    
-    .logo {
-        width: 60px;
-        height: 60px;
-    }
-    
-    .logo i {
-        font-size: 1.5rem;
-    }
-}
-
-/* Loading State */
-.btn.loading {
-    pointer-events: none;
-    opacity: 0.8;
-}
-
-.btn.loading i {
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* Enhanced focus states */
-input:focus-visible {
-    outline: 2px solid var(--primary-medium);
-    outline-offset: 2px;
-}
-
-/* Custom radio button check animation */
-.user-type-option input[type="radio"]:checked + .user-type-label .user-type-icon::before {
-    content: '✓';
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background: var(--accent-gold);
-    color: var(--white);
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    font-size: 0.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--shadow);
-}
 </style>
-
-<div class="login-container">
-    <div class="login-header">
-        <div class="logo">
-            <i class="fas fa-seedling"></i>
-        </div>
-        <h1>Welcome to FarmStats</h1>
-        <p>Sign in to your account</p>
-    </div>
-
-    <?php if (isset($_SESSION['error'])): ?>
-        <div class="error-message">
-            <i class="fas fa-exclamation-circle"></i>
-            <?php 
-            echo htmlspecialchars($_SESSION['error']); 
-            unset($_SESSION['error']);
-            ?>
-        </div>
-    <?php endif; ?>
-
-    <form method="POST" action="<?php echo BASE_URL; ?>/login">
-        <div class="user-type-selector">
-            <div class="user-type-option">
-                <input type="radio" id="admin" name="user_type" value="admin" required>
-                <label for="admin" class="user-type-label">
-                    <div class="user-type-icon admin-icon">
-                        <i class="fas fa-user-shield"></i>
-                    </div>
-                    <div class="user-type-name">Administrator</div>
-                    <div class="user-type-desc">System Management</div>
-                </label>
-            </div>
-            
-            <div class="user-type-option">
-                <input type="radio" id="farmer" name="user_type" value="farmer" required checked>
-                <label for="farmer" class="user-type-label">
-                    <div class="user-type-icon client-icon">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="user-type-name">Farmer</div>
-                    <div class="user-type-desc">Campaign Farmer</div>
-                </label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="email">Email Address</label>
-            <div class="input-with-icon">
-                <i class="fas fa-envelope"></i>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="password">Password</label>
-            <div class="input-with-icon">
-                <i class="fas fa-lock"></i>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary">
-            <i class="fas fa-sign-in-alt"></i>
-            Sign In
-        </button>
-    </form>
-
-    <div class="register-link">
-        <p>Don't have an account? <a href="<?php echo BASE_URL; ?>/register">Create one here</a></p>
-    </div>
-</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -543,10 +545,12 @@ document.addEventListener('DOMContentLoaded', function() {
     inputs.forEach(input => {
         input.addEventListener('focus', function() {
             this.parentElement.style.transform = 'scale(1.02)';
+            this.parentElement.style.borderColor = '#4a7c59';
         });
         
         input.addEventListener('blur', function() {
             this.parentElement.style.transform = 'scale(1)';
+            this.parentElement.style.borderColor = '#dde8e0';
         });
     });
 
@@ -563,4 +567,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <?php require_once VIEWS_PATH . '/layouts/footer.php'; ?>
-
