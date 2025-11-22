@@ -1,5 +1,4 @@
- HEAD
-=======
+
 # 🌾 FarmStat - Rice Farming Intelligence & Crowdfunding Platform
 
 **FarmStat** is a comprehensive web-based platform designed to empower Filipino rice farmers through digital profiling, community-backed funding, and agricultural intelligence. The platform aims to create the most detailed agricultural database in the Philippines while providing essential tools for farmer management, seasonal tracking, crowdfunding campaigns, and analytics.
@@ -203,4 +202,4 @@ To deploy a new "Livestock Management" feature, you would modify and add files i
 ---
 
 *FarmStat - Empowering Filipino Farmers Through Technology* 🌱
- 48645cc2ff43352c76c2d9ad5cd4d8ac320966c4
+
